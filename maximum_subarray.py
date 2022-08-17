@@ -1,26 +1,38 @@
 # O(n^2) solution
 def maxSubArray(self, nums: List[int]) -> int:
-    if len(nums)==1:
-        return nums[0]
-    res = -1000000
-    for i in range(1, len(nums)+1):
-        curr_length = i
-        curr_max = -1000000
-        for j in range(0, len(nums)-curr_length+1):
-            curr_arr = nums[j:j+curr_length]
-            if curr_max < sum(curr_arr):
-                curr_max = sum(curr_arr)
+    starting_pos = 0
+    res = nums[0]
+    while(starting_pos < len(nums)):
+        curr_max = nums[starting_pos]
+        curr_sum = nums[starting_pos]
+        curr_list = nums[starting_pos+1:]
+        for elem in curr_list:
+            curr_sum += elem
+            if curr_sum > curr_max:
+                curr_max = curr_sum
         if curr_max > res:
             res = curr_max
+        starting_pos += 1
     return res
 
-# O(n) solution
+# O(n) time complexity solution with O(n) space complexity
 def maxSubArray(self, nums: List[int]) -> int:
-    max_sum, curr_sum = nums[0], nums[0]
-    for i in range(1, len(nums)):
-        curr_value = nums[i]
-        curr_sum += curr_value
-        curr_sum = max(curr_value, curr_sum)
-        if curr_sum > max_sum:
-            max_sum = curr_sum
-    return max_sum
+  res_arr = []
+  res_arr.append(nums[0])
+  for i, elem in enumerate(nums):
+    if i == 0:
+      continue
+    if res_arr[i-1] > 0:
+      res_arr.append(res_arr[i-1] + elem)
+    else:
+      res_arr.append(elem)
+  return max(res_arr)
+
+# O(n) time complexity solution with O(1) space complexity
+def maxSubArray(self, nums: List[int]) -> int:
+    for i, elem in enumerate(nums):
+    if i == 0:
+      continue
+    if nums[i-1] > 0:
+      nums[i] = nums[i-1] + elem
+  return max(nums)
